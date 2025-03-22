@@ -1,5 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections;
+
+
 
 public class GameHandler : MonoBehaviour
 {
@@ -22,6 +26,8 @@ public class GameHandler : MonoBehaviour
     [SerializeField] Button ┰环;
     float zoom = 10f;
 
+    public event EventHandler OnCameraRandomPositionAndZoom;
+
     void Start()
     {
         ネ㏑╰参 = new ネ㏑╰参(100);
@@ -36,6 +42,9 @@ public class GameHandler : MonoBehaviour
         ち传產1.onClick.AddListener(() => { playerCamera.SetGetNewCameraFollowFunc(() => player1.position); playerCamera.GetCameraZoom(5f); });
         ち传產2.onClick.AddListener(() => { playerCamera.GetNewCameraFollow(player2.position); playerCamera.GetCameraZoom(7f);    });
         ち传產3.onClick.AddListener(() => { playerCamera.SetGetNewCameraFollowFunc(() => player3.position); playerCamera.GetCameraZoom(10f); });
+        OnCameraRandomPositionAndZoom += OnCameraRandomPositionAndZoomChanged;
+        float timer = 5f;
+        StartCoroutine(TriggerCameraRandomPositionAndZoom(timer));
 
         ┰.onClick.AddListener(() =>
         {
@@ -72,6 +81,26 @@ public class GameHandler : MonoBehaviour
             Debug.Log(ネ㏑╰参.﹀秖);
         });
 
+    }
+
+    private void OnCameraRandomPositionAndZoomChanged(object sender, EventArgs e)
+    {
+
+        Vector3 randCameraPos = new Vector3(UnityEngine.Random.Range(-15 , 10) , UnityEngine.Random.Range(-10, 10));
+        float randCameraZoon = UnityEngine.Random.Range(5f , 10f);
+
+        playerCamera.GetNewCameraFollow(randCameraPos); 
+        playerCamera.GetCameraZoom(randCameraZoon);
+
+    }
+
+    private IEnumerator TriggerCameraRandomPositionAndZoom(float timer)
+    {
+        while (true)
+        {
+            OnCameraRandomPositionAndZoom?.Invoke(this, EventArgs.Empty);
+            yield return new WaitForSeconds(timer); // –筳5牟祇Ω
+        }
     }
 
 }
