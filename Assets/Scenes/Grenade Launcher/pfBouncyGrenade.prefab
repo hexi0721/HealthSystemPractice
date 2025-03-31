@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5342638973460458233}
   - component: {fileID: 7649277902390569352}
-  - component: {fileID: -6189384071021682155}
+  - component: {fileID: 4532018042450551919}
   - component: {fileID: 1099541014499069794}
   - component: {fileID: 6264147416268124718}
   m_Layer: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &-6189384071021682155
+--- !u!50 &4532018042450551919
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0

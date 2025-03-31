@@ -69,6 +69,7 @@ public class GLPlayerHandler : MonoBehaviour
     public Vector3 GetShootPostion()
     {
         Vector3 mouserPos = Utils.GetMouseWorldPosZeroZ();
+        Debug.Log(mouserPos);
         return mouserPos;
     }
 }
