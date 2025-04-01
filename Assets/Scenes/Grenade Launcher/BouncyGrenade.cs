@@ -4,13 +4,32 @@ using UnityEngine;
 public class BouncyGrenade : MonoBehaviour
 {
 
+    public static int max_Ammo = 4;
+    public static int ammo = max_Ammo;
+
     Action<Vector3> OnExplodeAction;
 
     public static void Create(GameObject go , Vector3 spawnPos , Vector3 targetPos , Action<Vector3> OnExplodeAction)
     {
         BouncyGrenade bouncyGrenade = Instantiate(go, spawnPos, Quaternion.identity).GetComponent<BouncyGrenade>();
-
+        
         bouncyGrenade.SetUp(targetPos , OnExplodeAction);
+        ammo--;
+    }
+
+    public static bool HasAmmo()
+    {
+        return ammo > 0;
+    }
+
+    public static void ReloadAmmo()
+    {
+        ammo = max_Ammo;
+    }
+
+    public static bool CanReloadAmmo()
+    {
+        return ammo < max_Ammo;
     }
 
     float timer = 2f;
@@ -26,7 +45,7 @@ public class BouncyGrenade : MonoBehaviour
         GetComponent<Rigidbody2D>().linearVelocity = dir * moveSpeed;
         
         transform.localEulerAngles = new Vector3(0, 0 , Utils.GetAngleFromVector(dir) - 90);
-
+        bouncyState = 0;
     }
 
 

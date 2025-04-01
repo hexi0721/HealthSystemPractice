@@ -1,30 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GLPlayerHandler;
 
 
 public class GLGameHandler : MonoBehaviour
 {
 
     [SerializeField] GLPlayerHandler playerHandler;
-
+    IPlayerInterface playerInterface;
 
     [SerializeField] Transform pfEnemy;
     [SerializeField] GameObject pfBouncyGrenade;
+    [SerializeField] GameObject pfStickyGrenade;
     [SerializeField] Transform pfExplosion;
 
     [SerializeField] Transform followingTarget;
     
     private void Start()
     {
-        playerHandler.OnShoot += playerHandler_OnShoot;
+        //playerHandler.OnShoot += playerHandler_OnShoot;
         StartCoroutine(SpawnEnemy());
+
+        playerInterface = playerHandler;
     }
 
 
     private void Update()
     {
         GetCameraPos();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if(BouncyGrenade.HasAmmo())
+            {
+                BouncyGrenade.Create(pfBouncyGrenade, playerInterface.GetGunEndPoinitPosition(), playerInterface.GetShootPostion(), OnGrenadeExplode);
+            }
+            
+        }
+
+
     }
 
     private void GetCameraPos()
@@ -37,13 +52,23 @@ public class GLGameHandler : MonoBehaviour
         followingTarget.position = playerPos + dir * 1.5f;
 
     }
-
+    /*
     private void playerHandler_OnShoot(object sender, GLPlayerHandler.OnShootEventArgs e)
     {
-        
-        BouncyGrenade.Create(pfBouncyGrenade, e.gunEndPoinitPosition , e.shootPostion , OnGrenadeExplode);
-    }
 
+        switch (e.weaponState)
+        {
+            case 0:
+                BouncyGrenade.Create(pfBouncyGrenade, e.gunEndPoinitPosition, e.shootPostion, OnGrenadeExplode);
+                break;
+
+            case 1:
+                StickyGrenade.Create(pfStickyGrenade, e.gunEndPoinitPosition, e.shootPostion, OnGrenadeExplode);
+                break;
+        }
+        
+    }
+    */
     private void OnGrenadeExplode(Vector3 position)
     {
         Instantiate(pfExplosion, position, Quaternion.identity);
@@ -77,6 +102,15 @@ public class GLGameHandler : MonoBehaviour
 
             yield return new WaitForSeconds(2);
         }
+
+    }
+
+    public interface IPlayerInterface
+    {
+        Vector3 GetGunEndPoinitPosition();
+        Vector3 GetShootPostion();
+        // void PlayReload();
+
 
     }
 

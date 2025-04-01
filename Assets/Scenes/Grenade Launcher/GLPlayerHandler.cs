@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using static GLGameHandler;
 
-public class GLPlayerHandler : MonoBehaviour
+public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
 {
 
     [SerializeField] Transform player;
@@ -13,26 +14,56 @@ public class GLPlayerHandler : MonoBehaviour
         public Vector3 gunEndPoinitPosition { get; }
         public Vector3 shootPostion { get; }
 
-        public OnShootEventArgs(Vector3 gunEndPoinitPosition , Vector3 shootPostion)
+        public int weaponState { get; }
+
+        public OnShootEventArgs(Vector3 gunEndPoinitPosition, Vector3 shootPostion)
         {
             this.gunEndPoinitPosition = gunEndPoinitPosition;
             this.shootPostion = shootPostion;
+
+        }
+
+        public OnShootEventArgs(Vector3 gunEndPoinitPosition , Vector3 shootPostion, int weaponState)
+        {
+            this.gunEndPoinitPosition = gunEndPoinitPosition;
+            this.shootPostion = shootPostion;
+            this.weaponState = weaponState;
+
         }
     }
-     
+
+    // int weaponState = 0;
 
     private void Update()
     {
         PlayerMove();
         SetGunPos();
-
+        /*
         if (Input.GetMouseButtonDown(0))
         {
-            OnShoot?.Invoke(this, new OnShootEventArgs(GetGunEndPoinitPosition() , GetShootPostion()));
+            OnShoot?.Invoke(this, new OnShootEventArgs(GetGunEndPoinitPosition() , GetShootPostion() , GetWeaponState()));
+        }
+        */
+        if (Input.GetMouseButtonDown(1))
+        {
+            StickyGrenade.ExplodeAllStickyGrenade();
         }
 
-        
+        /*
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            if(weaponState == 0)
+            {
+                weaponState = 1;
+            }
+            else if (weaponState == 1)
+            {
+                weaponState = 0;
+            }
 
+            
+        }
+        */
     }
 
     private void PlayerMove()
@@ -69,7 +100,15 @@ public class GLPlayerHandler : MonoBehaviour
     public Vector3 GetShootPostion()
     {
         Vector3 mouserPos = Utils.GetMouseWorldPosZeroZ();
-        Debug.Log(mouserPos);
+        
         return mouserPos;
     }
+
+    /*
+    public int GetWeaponState()
+    {
+
+        return weaponState;
+    }
+    */
 }

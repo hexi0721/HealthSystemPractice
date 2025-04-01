@@ -280,6 +280,7 @@ MonoBehaviour:
   playerHandler: {fileID: 1656284263}
   pfEnemy: {fileID: 7115428914359772081, guid: 803ad492d86069d4891a2404bc0be738, type: 3}
   pfBouncyGrenade: {fileID: 3754808407850347537, guid: bcc4c2ea4dd53ad43849b607a84303aa, type: 3}
+  pfStickyGrenade: {fileID: 3754808407850347537, guid: 34d85f25de292d04e9f566827c9b604d, type: 3}
   pfExplosion: {fileID: 4259767691792868581, guid: dc18f163520e61c468dd3ea9722e4c1c, type: 3}
   followingTarget: {fileID: 249364300}
 --- !u!1 &705265261
