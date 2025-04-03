@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class StickyGrenade : MonoBehaviour
 {
+
+    private static int ammoMax = 8;
+    private static int ammo = ammoMax;
+
+
     Action<Vector3> OnExplodeAction;
 
     private static List<StickyGrenade> stickyGrenadeList;
@@ -17,6 +22,21 @@ public class StickyGrenade : MonoBehaviour
             stickyGrenade.ExplodeGrenade();
         }
         stickyGrenadeList.Clear();
+    }
+
+    public static bool HasAmmo()
+    {
+        return ammo > 0;
+    }
+
+    public static bool CanReloadAmmo()
+    {
+        return ammo < ammoMax;
+    }
+
+    public static void ReloadAmmo()
+    {
+        ammo = ammoMax;
     }
 
 
@@ -34,6 +54,15 @@ public class StickyGrenade : MonoBehaviour
 
         StickyGrenade.SetUp(targetPos, OnExplodeAction);
         stickyGrenadeList.Add(StickyGrenade);
+
+        if (stickyGrenadeList.Count > 8)
+        {
+            stickyGrenadeList[0].ExplodeGrenade();
+            stickyGrenadeList.RemoveAt(0);
+        }
+
+        ammo--;
+
     }
 
     private void SetUp(Vector3 targetPos, Action<Vector3> OnExplodeAction)

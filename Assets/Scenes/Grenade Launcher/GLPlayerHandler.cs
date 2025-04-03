@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using static GLGameHandler;
 
@@ -44,10 +45,13 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
             OnShoot?.Invoke(this, new OnShootEventArgs(GetGunEndPoinitPosition() , GetShootPostion() , GetWeaponState()));
         }
         */
+
+        /*
         if (Input.GetMouseButtonDown(1))
         {
             StickyGrenade.ExplodeAllStickyGrenade();
         }
+        */
 
         /*
         if(Input.GetKeyDown(KeyCode.C))
@@ -64,6 +68,13 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
             
         }
         */
+
+        bonusTImer -= Time.deltaTime;
+        if( bonusTImer < 0 )
+        {
+            Eyelander.ResetBonus();
+            SetMoveSpeedBonus(Eyelander.GetBonusSpeed());
+        }
     }
 
     private void PlayerMove()
@@ -71,7 +82,7 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        Vector3 move = new Vector3(h, v, 0);
+        Vector3 move = new Vector3(h, v, 0) * MoveSpeedBonus;
 
         player.transform.position += move * 2f * Time.deltaTime;
     }
@@ -111,4 +122,30 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
         return weaponState;
     }
     */
+
+    private float reloadTimer = 1.5f;
+
+    public void PlayReload(Action action)
+    {
+
+        StartCoroutine(ReloadingAmmo(action));
+
+
+    }
+
+    private IEnumerator ReloadingAmmo(Action action)
+    {
+        yield return new WaitForSeconds(reloadTimer);
+        action.Invoke();
+    }
+
+    float MoveSpeedBonus = 1;
+    float bonusTImer = 0f;
+    public void SetMoveSpeedBonus(float MoveSpeedBonus)
+    {
+        bonusTImer = 2f;
+        this.MoveSpeedBonus = MoveSpeedBonus;
+    }
+
+
 }
