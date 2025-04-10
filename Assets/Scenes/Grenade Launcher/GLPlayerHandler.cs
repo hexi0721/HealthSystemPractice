@@ -8,14 +8,12 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
 
     [SerializeField] Transform player;
     [SerializeField] Transform gun;
-
+    /*
     public event EventHandler<OnShootEventArgs> OnShoot;
     public class OnShootEventArgs : EventArgs
     {
         public Vector3 gunEndPoinitPosition { get; }
         public Vector3 shootPostion { get; }
-
-        public int weaponState { get; }
 
         public OnShootEventArgs(Vector3 gunEndPoinitPosition, Vector3 shootPostion)
         {
@@ -24,50 +22,12 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
 
         }
 
-        public OnShootEventArgs(Vector3 gunEndPoinitPosition , Vector3 shootPostion, int weaponState)
-        {
-            this.gunEndPoinitPosition = gunEndPoinitPosition;
-            this.shootPostion = shootPostion;
-            this.weaponState = weaponState;
-
-        }
     }
-
-    // int weaponState = 0;
-
+    */
     private void Update()
     {
         PlayerMove();
         SetGunPos();
-        /*
-        if (Input.GetMouseButtonDown(0))
-        {
-            OnShoot?.Invoke(this, new OnShootEventArgs(GetGunEndPoinitPosition() , GetShootPostion() , GetWeaponState()));
-        }
-        */
-
-        /*
-        if (Input.GetMouseButtonDown(1))
-        {
-            StickyGrenade.ExplodeAllStickyGrenade();
-        }
-        */
-
-        /*
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            if(weaponState == 0)
-            {
-                weaponState = 1;
-            }
-            else if (weaponState == 1)
-            {
-                weaponState = 0;
-            }
-
-            
-        }
-        */
 
         bonusTImer -= Time.deltaTime;
         if( bonusTImer < 0 )
@@ -115,21 +75,11 @@ public class GLPlayerHandler : MonoBehaviour , IPlayerInterface
         return mouserPos;
     }
 
-    /*
-    public int GetWeaponState()
-    {
-
-        return weaponState;
-    }
-    */
-
     private float reloadTimer = 1.5f;
 
     public void PlayReload(Action action)
     {
-
         StartCoroutine(ReloadingAmmo(action));
-
 
     }
 

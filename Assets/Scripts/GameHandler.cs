@@ -44,7 +44,7 @@ public class GameHandler : MonoBehaviour
         ¤Á´«ª±®a3.onClick.AddListener(() => { playerCamera.SetGetNewCameraFollowFunc(() => player3.position); playerCamera.GetCameraZoom(10f); });
         OnCameraRandomPositionAndZoom += OnCameraRandomPositionAndZoomChanged;
         float timer = 5f;
-        StartCoroutine(TriggerCameraRandomPositionAndZoom(timer));
+        // StartCoroutine(TriggerCameraRandomPositionAndZoom(timer));
 
         ©Ôªñ.onClick.AddListener(() =>
         {

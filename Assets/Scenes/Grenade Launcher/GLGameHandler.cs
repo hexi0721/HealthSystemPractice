@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static GLPlayerHandler;
-
 
 public class GLGameHandler : MonoBehaviour
 {
@@ -17,13 +14,17 @@ public class GLGameHandler : MonoBehaviour
     [SerializeField] Transform pfExplosion;
 
     [SerializeField] Transform followingTarget;
-    
+
+    Action action;
+
     private void Start()
     {
-        //playerHandler.OnShoot += playerHandler_OnShoot;
+
         StartCoroutine(SpawnEnemy());
 
         playerInterface = playerHandler;
+
+        action = HandleMeleeInput;
     }
 
 
@@ -31,9 +32,22 @@ public class GLGameHandler : MonoBehaviour
     {
         GetCameraPos();
 
-        HandleMeleeInput();
-        // HandleGrenadeInput();
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            action = HandleMeleeInput;
+        }
 
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            action = HandleStickyGrenadeInput;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            action = HandleBouncyGrenadeInput;
+        }
+
+        action();
     }
 
     private void HandleMeleeInput()
@@ -53,7 +67,7 @@ public class GLGameHandler : MonoBehaviour
         }
     }
 
-    private void HandleGrenadeInput()
+    private void HandleStickyGrenadeInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -79,6 +93,27 @@ public class GLGameHandler : MonoBehaviour
         }
     }
 
+    private void HandleBouncyGrenadeInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (BouncyGrenade.HasAmmo())
+            {
+                BouncyGrenade.Create(pfBouncyGrenade, playerInterface.GetGunEndPoinitPosition(), playerInterface.GetShootPostion(), OnGrenadeExplode);
+            }
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (BouncyGrenade.CanReloadAmmo())
+            {
+                playerInterface.PlayReload(() => BouncyGrenade.ReloadAmmo());
+            }
+
+        }
+    }
+
     private void GetCameraPos()
     {
         Vector3 mousePos = Utils.GetMouseWorldPos();
@@ -89,23 +124,7 @@ public class GLGameHandler : MonoBehaviour
         followingTarget.position = playerPos + dir * 1.5f;
 
     }
-    /*
-    private void playerHandler_OnShoot(object sender, GLPlayerHandler.OnShootEventArgs e)
-    {
 
-        switch (e.weaponState)
-        {
-            case 0:
-                BouncyGrenade.Create(pfBouncyGrenade, e.gunEndPoinitPosition, e.shootPostion, OnGrenadeExplode);
-                break;
-
-            case 1:
-                StickyGrenade.Create(pfStickyGrenade, e.gunEndPoinitPosition, e.shootPostion, OnGrenadeExplode);
-                break;
-        }
-        
-    }
-    */
     private void OnGrenadeExplode(Vector3 position)
     {
         Instantiate(pfExplosion, position, Quaternion.identity);
@@ -143,7 +162,7 @@ public class GLGameHandler : MonoBehaviour
             GLSlime glSlime =  (Instantiate(pfEnemy, new Vector3(UnityEngine.Random.Range(-10, 11), UnityEngine.Random.Range(-5, 5)), Quaternion.identity)).GetComponent<GLSlime>();
             glSlime.SetUp(2, () => playerHandler.GetPlayerPos());
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
 
     }
