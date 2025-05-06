@@ -65,6 +65,7 @@ public class Confetti : MonoBehaviour
         RectTransform rectTransform;
 
         Vector3 moveAmount;
+
         Vector3 euler;
         float eulerZSpeed;
 
@@ -75,8 +76,6 @@ public class Confetti : MonoBehaviour
             this.anchorPosition = anchorPosition;
             transform = Instantiate(pf , container);
             rectTransform = transform.GetComponent<RectTransform>();
-
-            // rectTransform.anchoredPosition = anchorPosition;
 
             moveAmount = new Vector3(0, Random.Range(-50f, -100f));
 
